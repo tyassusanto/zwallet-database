@@ -12,9 +12,21 @@ const insertUsers = (inserDataUsers) => {
     })
 }
 
-const getAllUsers = () => {
+// const getAllUsers = () => {
+//     return new Promise((resolve, reject) => {
+//         connection.query("SELECT * FROM users",(error, result)=>{
+//         if(!error){
+//             resolve(result)
+//         }else{
+//             reject(error)
+//         }
+//         })
+//     })
+// }
+
+const findAllUsers = ({search, sort, order}) => {
     return new Promise((resolve, reject) => {
-        connection.query("SELECT * FROM users",(error, result)=>{
+        connection.query(`SELECT * FROM users ORDER BY ${sort} ${order}`,(error, result)=>{
         if(!error){
             resolve(result)
         }else{
@@ -59,7 +71,7 @@ const detailUsers = (id) => {
         })
     })
 }
-const detailUserss = (name) => {
+const getName = (name) => {
     return new Promise((resolve, reject) => {
         connection.query("SELECT * FROM users WHERE name LIKE ?", name, (error, result) => {
             if(!error){
@@ -73,9 +85,10 @@ const detailUserss = (name) => {
 
 module.exports = {
     insertUsers,
-    getAllUsers,
+    findAllUsers,
+    // getAllUsers,
     updateUsers,
     deleteUsers,
     detailUsers,
-    detailUserss
+    getName
 }

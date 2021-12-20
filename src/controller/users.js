@@ -12,31 +12,81 @@ const insertUser = async (req, res, next)=>{
     }
     try {
         const result  = await modelUsers.insertUsers(insertDataUsers)
+        res.status(200)
         res.json({
-            message : "Insert User Behasil",
-            result
+            status : 'Success',
+            code : 200,
+            data : result,
+            message : "Success Insert Data"
         })
     } catch (error) {
         res.status(500),
-        res.json({
-            statusCode : 500,
-            message : "Internal Server Error"
+        next({
+            status : 500,
+            message : 'Internal Server Error'
         })
     }
 }
 
-// get all users 
-const getAllUsers  = async (req, res, next) => {
+// get all users data 
+// const getAllUsers = async (req, res, next) => {
+//     try {
+//         const result = await modelUsers.getAllUsers()
+//         res.status(200)
+//         res.json({
+//             status : 'Success',
+//             code : 200,
+//             data : result,
+//             message : "Success Get All Data"
+//         })
+//     } catch (error) {
+//         res.status(500),
+//         next({
+//             status : 500,
+//             message : 'Internal Server Error'
+//         })
+//     }
+// }
+
+// const getAllUsers  = async (req, res, next) => {
+//     try {
+//         const result = await modelUsers.getAllUsers()
+//         res.json({
+//             result
+//         })
+//     } catch (error) {
+//         res.status(500),
+//         res.json({
+//             statusCode : 500,
+//             message : "Internal Server Error"
+//         })
+//     }
+// }
+
+// find all users 
+const findAllUsers  = async (req, res, next) => {
     try {
-        const result = await modelUsers.getAllUsers()
+        const search = req.query.name
+        const sort = req.query.sort
+        const order = req.query.order || 'desc'
+        // console.log(search, sort, order);
+        const result = await modelUsers.findAllUsers({
+            search,
+            sort,
+            order
+        })
+        res.status(200)
         res.json({
-            result
+            status : 'Success',
+            code : 200,
+            data : result,
+            message : "Success Get All Data"
         })
     } catch (error) {
         res.status(500),
-        res.json({
-            statusCode : 500,
-            message : "Internal Server Error"
+        next({
+            status : 500,
+            message : 'Internal Server Error'
         })
     }
 }
@@ -52,15 +102,18 @@ const updateUsers = async (req, res, next) => {
             updated_at : new Date()
         }
     const result  = await modelUsers.updateUsers(update, id)
+    res.status(200)
     res.json({
-        message : "Berhasil Update",
-        result
+        status : 'Success',
+        code : 200,
+        data : result,
+        message : `Success Update Data ${id}`
     })
     } catch (error) {
         res.status(500),
-        res.json({
-            statusCode : 500,
-            message : "Internal Server Error"
+        next({
+            status : 500,
+            message : 'Internal Server Error'
         })
     }
     
@@ -71,76 +124,65 @@ const deleteUsers = async (req, res, next) => {
     try {
         const id = req.params.id
         const result = await modelUsers.deleteUsers(id)
+        res.status(200)
         res.json({
-            result
+            status : 'Success',
+            code : 200,
+            data : result,
+            message : `Success Delete Data ${id}`
         })
     } catch (error) {
         res.status(500),
-        res.json({
-            statusCode : 500,
-            message : "Internal Server Error"
+        next({
+            status : 500,
+            message : 'Internal Server Error'
         })
     }
 }
 
 // JOIN DENGAN TABLE WALLET
-// const detailUsers = async (req, res, next) => {
-//     try {
-//         const id = req.params.id
-//         const [result] = await modelUsers.detailUsers(id)
-//         res.json({
-//             message : `Detail Users id : ${id}`,
-//             result
-//         })
-//     } catch (error) {
-//         res.status(500),
-//         res.json({
-//             statusCode : 500,
-//             message : "Internal Server Error"
-//         })
-//     }
-    
-// }
-const detailUserss = async (req, res, next) => {
+const detailUsers = async (req, res, next) => {
     try {
-        const name = req.params.name
-        const result = await modelUsers.detailUserss(name)
-        if(!result){
-            res.json({
-                message: 'kosong'
-            })
-        }else{
-            res.json({
-                result
-            })
-        }
-        // const name =  req.params.name
-        // if(!name){
-        //     res.json({
-        //         message : "kosong"
-        //     })
-        // }else{
-        //     const result = await modelUsers.detailUserss(name)
-        //     res.json({
-        //         message : `Nama : ${name}`,
-        //         result
-        //     })
-        // }
+        const id = req.params.id
+        const [result] = await modelUsers.detailUsers(id)
+        res.json({
+            message : `Detail Users id : ${id}`,
+            result
+        })
     } catch (error) {
         res.status(500),
-        res.json({
-            statusCode : 500,
-            message : "Internal Server Error"
+        next({
+            status : 500,
+            message : 'Internal Server Error'
         })
     }
+    
+}
+const getName = async (req, res, next) => {
+    try {
+        const name = req.params.name
+        const [result] = await modelUsers.detailUsers(name)
+        res.json({
+            message : `Get Users Name : ${name}`,
+            result
+        })
+    } catch (error) {
+        res.status(500),
+        next({
+            status : 500,
+            message : 'Internal Server Error'
+        })
+    }
+    
 }
 
 
 module.exports = {
     insertUser,
-    getAllUsers,
+    findAllUsers,
+    // getAllUsers,
     updateUsers,
     deleteUsers,
-    // detailUsers,
-    detailUserss
+    detailUsers,
+    getName
 }
