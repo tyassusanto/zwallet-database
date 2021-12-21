@@ -16,7 +16,6 @@ app.use(morgan('dev'))
 app.use('/users', usersRoute)
 // URL NOT FOUND
 app.use(commonHelper.notFound)
-
 // Error Handing
 app.use(middlewere.errorHandling)
 
