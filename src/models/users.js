@@ -12,21 +12,21 @@ const insertUsers = (inserDataUsers) => {
     })
 }
 
-// const getAllUsers = () => {
+// const getUsers = () => {
 //     return new Promise((resolve, reject) => {
-//         connection.query("SELECT * FROM users",(error, result)=>{
-//         if(!error){
-//             resolve(result)
-//         }else{
-//             reject(error)
-//         }
+//         connection.query("SELECT * FROM users", (error, result) => {
+//             if(!error){
+//                 resolve(result)
+//             }else{
+//                 reject(error)
+//             }
 //         })
 //     })
 // }
 
-const findAllUsers = ({search, sort, order}) => {
+const findAllUsers = ({search, sort, order, limit, offset}) => {
     return new Promise((resolve, reject) => {
-        connection.query(`SELECT * FROM users ORDER BY ${sort} ${order}`,(error, result)=>{
+        connection.query(`SELECT * FROM users WHERE name LIKE '%${search}%' ORDER BY ${sort} ${order} LIMIT ${limit} OFFSET ${offset}`,(error, result)=>{
         if(!error){
             resolve(result)
         }else{
@@ -71,9 +71,10 @@ const detailUsers = (id) => {
         })
     })
 }
-const getName = (name) => {
+
+const count = () => {
     return new Promise((resolve, reject) => {
-        connection.query("SELECT * FROM users WHERE name LIKE ?", name, (error, result) => {
+        connection.query("SELECT COUNT (*) as total FROM users", (error, result) => {
             if(!error){
                 resolve(result)
             }else{
@@ -86,9 +87,9 @@ const getName = (name) => {
 module.exports = {
     insertUsers,
     findAllUsers,
-    // getAllUsers,
+    // getUsers,
     updateUsers,
     deleteUsers,
     detailUsers,
-    getName
+    count
 }

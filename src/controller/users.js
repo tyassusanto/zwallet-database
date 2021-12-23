@@ -1,6 +1,7 @@
 // ini controller users beneran buat tugas
-const connection = require('../config/connection')
 const modelUsers = require('../models/users')
+const commonHelper = require('../helper/common')
+const { parse } = require('dotenv')
 // register / create
 const insertUser = async (req, res, next)=>{
     const {name, username, email, phone} = req.body
@@ -13,12 +14,7 @@ const insertUser = async (req, res, next)=>{
     try {
         const result  = await modelUsers.insertUsers(insertDataUsers)
         res.status(200)
-        res.json({
-            status : 'Success',
-            code : 200,
-            data : result,
-            message : "Success Insert Data"
-        })
+        commonHelper.response(res, result, 200, null)
     } catch (error) {
         res.status(500),
         next({
@@ -29,15 +25,15 @@ const insertUser = async (req, res, next)=>{
 }
 
 // get all users data 
-// const getAllUsers = async (req, res, next) => {
+// const getUsers = async (req, res, nexy) => {
 //     try {
-//         const result = await modelUsers.getAllUsers()
+//         const result = await modelUsers.getUsers()
 //         res.status(200)
 //         res.json({
 //             status : 'Success',
 //             code : 200,
 //             data : result,
-//             message : "Success Get All Data"
+//             message : "Success Get All Data Users"
 //         })
 //     } catch (error) {
 //         res.status(500),
@@ -48,39 +44,30 @@ const insertUser = async (req, res, next)=>{
 //     }
 // }
 
-// const getAllUsers  = async (req, res, next) => {
-//     try {
-//         const result = await modelUsers.getAllUsers()
-//         res.json({
-//             result
-//         })
-//     } catch (error) {
-//         res.status(500),
-//         res.json({
-//             statusCode : 500,
-//             message : "Internal Server Error"
-//         })
-//     }
-// }
-
 // find all users 
 const findAllUsers  = async (req, res, next) => {
     try {
-        const search = req.query.name
+        const search = req.query.name || '%%'
         const sort = req.query.sort
         const order = req.query.order || 'desc'
-        // console.log(search, sort, order);
+        const page = parseInt(req.query.page) || 1
+        const limit = parseInt(req.query.limit) || 2
+        const offset = (page - 1) * limit
         const result = await modelUsers.findAllUsers({
             search,
             sort,
-            order
+            order,
+            limit,
+            offset
         })
+        const [{total}] = await modelUsers.count()
+        console.log(total);
         res.status(200)
-        res.json({
-            status : 'Success',
-            code : 200,
-            data : result,
-            message : "Success Get All Data"
+        commonHelper.response(res, result, 200, null,{
+            currentPage : page,
+            limitData : limit,
+            totalUsers : total,
+            totalPage : Math.ceil(total / limit)
         })
     } catch (error) {
         res.status(500),
@@ -103,12 +90,7 @@ const updateUsers = async (req, res, next) => {
         }
     const result  = await modelUsers.updateUsers(update, id)
     res.status(200)
-    res.json({
-        status : 'Success',
-        code : 200,
-        data : result,
-        message : `Success Update Data ${id}`
-    })
+    commonHelper.response(res, result, 200, null)
     } catch (error) {
         res.status(500),
         next({
@@ -125,12 +107,7 @@ const deleteUsers = async (req, res, next) => {
         const id = req.params.id
         const result = await modelUsers.deleteUsers(id)
         res.status(200)
-        res.json({
-            status : 'Success',
-            code : 200,
-            data : result,
-            message : `Success Delete Data ${id}`
-        })
+        commonHelper.response(res, result, 200, null)
     } catch (error) {
         res.status(500),
         next({
@@ -158,31 +135,12 @@ const detailUsers = async (req, res, next) => {
     }
     
 }
-const getName = async (req, res, next) => {
-    try {
-        const name = req.params.name
-        const [result] = await modelUsers.detailUsers(name)
-        res.json({
-            message : `Get Users Name : ${name}`,
-            result
-        })
-    } catch (error) {
-        res.status(500),
-        next({
-            status : 500,
-            message : 'Internal Server Error'
-        })
-    }
-    
-}
-
 
 module.exports = {
     insertUser,
     findAllUsers,
-    // getAllUsers,
+    // getUsers,
     updateUsers,
     deleteUsers,
-    detailUsers,
-    getName
+    detailUsers
 }

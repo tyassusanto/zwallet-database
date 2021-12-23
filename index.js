@@ -17,9 +17,9 @@ app.use('/users', usersRoute)
 // URL NOT FOUND
 app.use(commonHelper.notFound)
 // Error Handing
-app.use(middlewere.errorHandling)
+app.use(commonHelper.errorHandling)
 
-const PORT = 4000
+const PORT = process.env.PORT || 4000
 app.listen(PORT,()=>{
     console.log(`Server is running Port : ${PORT}`);
 })
