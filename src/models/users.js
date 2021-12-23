@@ -11,18 +11,17 @@ const insertUsers = (inserDataUsers) => {
         })
     })
 }
-
-// const getUsers = () => {
-//     return new Promise((resolve, reject) => {
-//         connection.query("SELECT * FROM users", (error, result) => {
-//             if(!error){
-//                 resolve(result)
-//             }else{
-//                 reject(error)
-//             }
-//         })
-//     })
-// }
+const getUsers = () => {
+    return new Promise((resolve, reject) => {
+        connection.query("SELECT * FROM users", (error, result) => {
+            if(!error){
+                resolve(result)
+            }else{
+                reject(error)
+            }
+        })
+    })
+}
 
 const findAllUsers = ({search, sort, order, limit, offset}) => {
     return new Promise((resolve, reject) => {
@@ -87,7 +86,7 @@ const count = () => {
 module.exports = {
     insertUsers,
     findAllUsers,
-    // getUsers,
+    getUsers,
     updateUsers,
     deleteUsers,
     detailUsers,

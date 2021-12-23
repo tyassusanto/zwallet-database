@@ -4,12 +4,12 @@ const commonHelper = require('../helper/common')
 const { parse } = require('dotenv')
 // register / create
 const insertUser = async (req, res, next)=>{
-    const {name, username, email, phone} = req.body
+    const {id, username, email, password} = req.body
     const insertDataUsers = {
-        name,
+        id,
         username,
         email,
-        phone
+        password
     }
     try {
         const result  = await modelUsers.insertUsers(insertDataUsers)
@@ -25,24 +25,24 @@ const insertUser = async (req, res, next)=>{
 }
 
 // get all users data 
-// const getUsers = async (req, res, nexy) => {
-//     try {
-//         const result = await modelUsers.getUsers()
-//         res.status(200)
-//         res.json({
-//             status : 'Success',
-//             code : 200,
-//             data : result,
-//             message : "Success Get All Data Users"
-//         })
-//     } catch (error) {
-//         res.status(500),
-//         next({
-//             status : 500,
-//             message : 'Internal Server Error'
-//         })
-//     }
-// }
+const getUsers = async (req, res, nexy) => {
+    try {
+        const result = await modelUsers.getUsers()
+        res.status(200)
+        res.json({
+            status : 'Success',
+            code : 200,
+            data : result,
+            message : "Success Get All Data Users"
+        })
+    } catch (error) {
+        res.status(500),
+        next({
+            status : 500,
+            message : 'Internal Server Error'
+        })
+    }
+}
 
 // find all users 
 const findAllUsers  = async (req, res, next) => {
@@ -139,7 +139,7 @@ const detailUsers = async (req, res, next) => {
 module.exports = {
     insertUser,
     findAllUsers,
-    // getUsers,
+    getUsers,
     updateUsers,
     deleteUsers,
     detailUsers

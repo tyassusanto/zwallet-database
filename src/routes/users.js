@@ -3,6 +3,7 @@ const route = express.Router()
 const usersController = require('../controller/users')
 
 route.post('/', usersController.insertUser)
+route.get('/', usersController.getUsers)
 route.get('/', usersController.findAllUsers)
 // route.get('/', usersController.getUsers)
 route.put('/:id', usersController.updateUsers)
