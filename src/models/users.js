@@ -1,6 +1,6 @@
 const connection = require('../config/connection')
 
-const insertUsers = (inserDataUsers) => {
+const registerUser = (inserDataUsers) => {
     return new Promise((resolve, reject) => {
         connection.query("INSERT INTO users set ?", inserDataUsers, (error, result)=>{
             if(!error){
@@ -84,7 +84,7 @@ const count = () => {
 }
 
 module.exports = {
-    insertUsers,
+    registerUser,
     findAllUsers,
     getUsers,
     updateUsers,

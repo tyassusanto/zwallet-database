@@ -1,9 +1,9 @@
 // ini controller users beneran buat tugas
 const modelUsers = require('../models/users')
 const commonHelper = require('../helper/common')
-const { parse } = require('dotenv')
 // register / create
-const insertUser = async (req, res, next)=>{
+const register = async (req, res, next)=>{
+    try {
     const {id, username, email, password} = req.body
     const insertDataUsers = {
         id,
@@ -11,8 +11,7 @@ const insertUser = async (req, res, next)=>{
         email,
         password
     }
-    try {
-        const result  = await modelUsers.insertUsers(insertDataUsers)
+        const result  = await modelUsers.registerUser(insertDataUsers)
         res.status(200)
         commonHelper.response(res, result, 200, null)
     } catch (error) {
@@ -137,7 +136,7 @@ const detailUsers = async (req, res, next) => {
 }
 
 module.exports = {
-    insertUser,
+    register,
     findAllUsers,
     getUsers,
     updateUsers,

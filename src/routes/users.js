@@ -2,7 +2,7 @@ const express = require('express')
 const route = express.Router()
 const usersController = require('../controller/users')
 
-route.post('/', usersController.insertUser)
+route.post('/', usersController.register)
 route.get('/', usersController.getUsers)
 route.get('/', usersController.findAllUsers)
 // route.get('/', usersController.getUsers)
