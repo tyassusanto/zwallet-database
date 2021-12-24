@@ -1,8 +1,8 @@
 const connection = require('../config/connection')
 
-const registerUser = (inserDataUsers) => {
+const registerUser = (insertDataRegister) => {
     return new Promise((resolve, reject) => {
-        connection.query("INSERT INTO users set ?", inserDataUsers, (error, result)=>{
+        connection.query("INSERT INTO users set ?", insertDataRegister, (error, result)=>{
             if(!error){
                 resolve(result)
             }else{  
@@ -83,6 +83,32 @@ const count = () => {
     })
 }
 
+// cek email terdaftar untuk register
+const findEmail = (email) => {
+    return new Promise((resolve, reject) => {
+        connection.query(`SELECT * FROM users WHERE email = ?`, email, (error, result) => {
+            if(!error){
+                resolve(result)
+            }else{
+                reject(error)
+            }
+        })
+    })
+}
+
+// find username untuk login
+const findUsername = (username) => {
+    return new Promise((resolve, reject) => {
+        connection.query(`SELECT * FROM users WHERE username = ?`, username, (error, result) => {
+            if(!error){
+                resolve(result)
+            }else{
+                reject(error)
+            }
+        })
+    })
+}
+
 module.exports = {
     registerUser,
     findAllUsers,
@@ -90,5 +116,7 @@ module.exports = {
     updateUsers,
     deleteUsers,
     detailUsers,
-    count
+    count,
+    findEmail,
+    findUsername
 }

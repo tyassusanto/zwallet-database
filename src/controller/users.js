@@ -1,25 +1,58 @@
 // ini controller users beneran buat tugas
+const createError = require('http-errors')
 const modelUsers = require('../models/users')
 const commonHelper = require('../helper/common')
+const {v4 : uuid} = require('uuid')
+const bcrypt = require('bcrypt')
 // register / create
 const register = async (req, res, next)=>{
     try {
-    const {id, username, email, password} = req.body
-    const insertDataUsers = {
-        id,
+    const {username, email, password} = req.body
+    const userEmail = await modelUsers.findEmail(email)
+    const userUsername = await modelUsers.findUsername(username)
+    if(userEmail.length > 0){
+        return next({
+            message : "Email Already Registered"
+        })
+    }
+    if(userUsername.length > 0){
+        return next ({
+            message : "Username Already Registered"
+        })
+    }
+    const hashPassword = await bcrypt.hash(password, 10);
+    const insertDataRegister = {
+        id : uuid(),
         username,
         email,
-        password
+        password : hashPassword
     }
-        const result  = await modelUsers.registerUser(insertDataUsers)
-        res.status(200)
-        commonHelper.response(res, result, 200, null)
+        const resultRegister  = await modelUsers.registerUser(insertDataRegister)
+        commonHelper.response(res, resultRegister, 201, `Succes Create Account ${username}`)
     } catch (error) {
         res.status(500),
         next({
             status : 500,
             message : 'Internal Server Error'
         })
+    }
+}
+
+// login user
+const login = async (req, res, next) => {
+    try {
+        const {username, password} = req.body
+        const [user] = await modelUsers.findUsername(username)
+        if(!user) return next(createError(403, 'Username or Password Incorect'))
+        const hashedPassword = await bcrypt.compare(password, user.password)
+        if(hashedPassword){
+            commonHelper.response(res, null, 200, `Succes Login, Welcome Back ${username}`)
+        } else {
+            next(createError(403, 'Username or Password Incorect'))
+        }
+        
+    } catch (error) {
+        next(createError(500, new createError.InternalServerError))
     }
 }
 
@@ -137,6 +170,7 @@ const detailUsers = async (req, res, next) => {
 
 module.exports = {
     register,
+    login,
     findAllUsers,
     getUsers,
     updateUsers,
