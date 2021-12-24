@@ -12,12 +12,12 @@ const register = async (req, res, next)=>{
     const userUsername = await modelUsers.findUsername(username)
     if(userEmail.length > 0){
         return next({
-            message : "Email Already Registered"
+            message : 'Email Already Registered'
         })
     }
     if(userUsername.length > 0){
         return next ({
-            message : "Username Already Registered"
+            message : 'Username Already Registered'
         })
     }
     const hashPassword = await bcrypt.hash(password, 10);
@@ -57,7 +57,7 @@ const login = async (req, res, next) => {
 }
 
 // get all users data 
-const getUsers = async (req, res, nexy) => {
+const getUsers = async (req, res, next) => {
     try {
         const result = await modelUsers.getUsers()
         res.status(200)
@@ -65,7 +65,7 @@ const getUsers = async (req, res, nexy) => {
             status : 'Success',
             code : 200,
             data : result,
-            message : "Success Get All Data Users"
+            message : 'Success Get All Data Users'
         })
     } catch (error) {
         res.status(500),
