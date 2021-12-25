@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 
 const usersRoute = require('./src/routes/users')
+const adminRoute = require('./src/routes/admin')
 const middlewere = require('./src/middlewere/common')
 const commonHelper = require('./src/helper/common')
 const morgan = require('morgan')
@@ -14,6 +15,7 @@ app.use(morgan('dev'))
 
 // routes
 app.use('/users', usersRoute)
+app.use('/admin', adminRoute)
 // URL NOT FOUND
 app.use(commonHelper.notFound)
 // Error Handing

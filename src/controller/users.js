@@ -1,9 +1,9 @@
 // ini controller users beneran buat tugas
-const createError = require('http-errors')
-const modelUsers = require('../models/users')
-const commonHelper = require('../helper/common')
-const {v4 : uuid} = require('uuid')
-const bcrypt = require('bcrypt')
+const createError = require('http-errors') // error response using http-error
+const modelUsers = require('../models/users') //users model
+const commonHelper = require('../helper/common') //help response / error controller
+const {v4 : uuid} = require('uuid') //unic user id
+const bcrypt = require('bcrypt') //encrypting user password
 // register / create
 const register = async (req, res, next)=>{
     try {
@@ -53,26 +53,6 @@ const login = async (req, res, next) => {
         
     } catch (error) {
         next(createError(500, new createError.InternalServerError))
-    }
-}
-
-// get all users data 
-const getUsers = async (req, res, next) => {
-    try {
-        const result = await modelUsers.getUsers()
-        res.status(200)
-        res.json({
-            status : 'Success',
-            code : 200,
-            data : result,
-            message : 'Success Get All Data Users'
-        })
-    } catch (error) {
-        res.status(500),
-        next({
-            status : 500,
-            message : 'Internal Server Error'
-        })
     }
 }
 
@@ -133,21 +113,21 @@ const updateUsers = async (req, res, next) => {
     
 }
 
-// delete
-const deleteUsers = async (req, res, next) => {
-    try {
-        const id = req.params.id
-        const result = await modelUsers.deleteUsers(id)
-        res.status(200)
-        commonHelper.response(res, result, 200, null)
-    } catch (error) {
-        res.status(500),
-        next({
-            status : 500,
-            message : 'Internal Server Error'
-        })
-    }
-}
+// // delete
+// const deleteUsers = async (req, res, next) => {
+//     try {
+//         const id = req.params.id
+//         const result = await modelUsers.deleteUsers(id)
+//         res.status(200)
+//         commonHelper.response(res, result, 200, null)
+//     } catch (error) {
+//         res.status(500),
+//         next({
+//             status : 500,
+//             message : 'Internal Server Error'
+//         })
+//     }
+// }
 
 // JOIN DENGAN TABLE WALLET
 const detailUsers = async (req, res, next) => {
@@ -172,8 +152,6 @@ module.exports = {
     register,
     login,
     findAllUsers,
-    getUsers,
     updateUsers,
-    deleteUsers,
     detailUsers
 }

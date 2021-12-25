@@ -11,17 +11,6 @@ const registerUser = (insertDataRegister) => {
         })
     })
 }
-const getUsers = () => {
-    return new Promise((resolve, reject) => {
-        connection.query("SELECT * FROM users", (error, result) => {
-            if(!error){
-                resolve(result)
-            }else{
-                reject(error)
-            }
-        })
-    })
-}
 
 const findAllUsers = ({search, sort, order, limit, offset}) => {
     return new Promise((resolve, reject) => {
@@ -47,17 +36,6 @@ const updateUsers = (update, id) => {
     })
 }
 
-const deleteUsers = (id) => {
-    return new Promise((resolve, reject) => {
-        connection.query("DELETE FROM users WHERE id = ?", id, (error, result) => {
-            if(!error){
-                resolve(result)
-            }else{
-                reject(error)
-            }
-        })
-    })
-}
 // TAMBAHKAN DENGAN JOIN
 const detailUsers = (id) => {
     return new Promise((resolve, reject) => {
@@ -112,9 +90,7 @@ const findUsername = (username) => {
 module.exports = {
     registerUser,
     findAllUsers,
-    getUsers,
     updateUsers,
-    deleteUsers,
     detailUsers,
     count,
     findEmail,
