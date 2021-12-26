@@ -28,7 +28,7 @@ const register = async (req, res, next)=>{
         password : hashPassword
     }
         const resultRegister  = await modelUsers.registerUser(insertDataRegister)
-        commonHelper.response(res, resultRegister, 201, `Succes Create Account ${username}`)
+        commonHelper.response(res, insertDataRegister, 201, `Succes Create Account ${username}`)
     } catch (error) {
         res.status(500),
         next({
@@ -102,7 +102,7 @@ const updateUsers = async (req, res, next) => {
         }
     const result  = await modelUsers.updateUsers(update, id)
     res.status(200)
-    commonHelper.response(res, result, 200, null)
+    commonHelper.response(res, update, 200, `Success Update Your Pofile`)
     } catch (error) {
         res.status(500),
         next({

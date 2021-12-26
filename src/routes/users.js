@@ -5,7 +5,7 @@ const usersController = require('../controller/users')
 route.post('/register', usersController.register)
 route.post('/login', usersController.login)
 route.get('/search', usersController.findAllUsers)
-route.put('/:id', usersController.updateUsers)
+route.put('/update/:id', usersController.updateUsers)
 route.get('/profile/:id', usersController.detailUsers)
 
 module.exports = route
