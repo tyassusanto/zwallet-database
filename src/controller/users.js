@@ -11,14 +11,10 @@ const register = async (req, res, next)=>{
     const userEmail = await modelUsers.findEmail(email)
     const userUsername = await modelUsers.findUsername(username)
     if(userEmail.length > 0){
-        return next({
-            message : 'Email Already Registered'
-        })
+        return next(createError(403, 'Email Already Registered'))
     }
     if(userUsername.length > 0){
-        return next ({
-            message : 'Username Already Registered'
-        })
+        return next (createError(403, 'Email Already Registered'))
     }
     const hashPassword = await bcrypt.hash(password, 10);
     const insertDataRegister = {
@@ -52,7 +48,7 @@ const login = async (req, res, next) => {
         }
         
     } catch (error) {
-        next(createError(500, new createError.InternalServerError))
+        next(createError(403, new createError.InternalServerError))
     }
 }
 
