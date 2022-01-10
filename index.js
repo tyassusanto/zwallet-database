@@ -6,6 +6,7 @@ const adminRoute = require('./src/routes/admin')
 const middlewere = require('./src/middlewere/common')
 const commonHelper = require('./src/helper/common')
 const morgan = require('morgan')
+const cors = require('cors')
 
 
 //middlewere
@@ -13,6 +14,7 @@ app.use(middlewere.myConsole)
 app.use(express.json()) 
 app.use(morgan('dev'))
 
+app.use(cors())
 // routes
 app.use('/users', usersRoute)
 app.use('/admin', adminRoute)
