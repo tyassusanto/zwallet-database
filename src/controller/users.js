@@ -44,11 +44,15 @@ const login = async (req, res, next) => {
         if(hashedPassword){
             commonHelper.response(res, null, 200, `Succes Login, Welcome Back ${username}`)
         } else {
-            next(createError(403, 'Username or Password Incorect'))
+            next(createError(403, 'Incorect Username or Password'))
         }
-        
     } catch (error) {
-        next(createError(403, new createError.InternalServerError))
+        next(createError(500, new createError.InternalServerError()))
+        // res.status(500),
+        // next({
+        //     status : 500,
+        //     message : 'Internal Server Error'
+        // })
     }
 }
 

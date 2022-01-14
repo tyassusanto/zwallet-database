@@ -7,19 +7,20 @@ const notFound = (req, res, next) => {
 
 const errorHandling = (err, req, res, next) => {
     const statusCode = err.status
+    // console.log(err.status);
     const errMessage = err.message
-    res.status = statusCode
+    res.status(statusCode)
     res.json({
         errorMessage : errMessage
     })
 }
 
-const response = (res, result, status, error, pagination) => {
+const response = (res, result, status, message, pagination) => {
     res.json({
         status : 'Success',
-        code : status,
+        code : status || 200,
         data : result,
-        message : error || null,
+        message : message || null,
         pagination
     })
 }

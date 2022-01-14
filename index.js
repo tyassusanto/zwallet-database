@@ -1,3 +1,7 @@
+const path = require('path')
+require('dotenv').config({path: path.join(__dirname, '.env')})
+
+
 const express = require('express')
 const app = express()
 
@@ -22,6 +26,11 @@ app.use('/admin', adminRoute)
 app.use(commonHelper.notFound)
 // Error Handing
 app.use(commonHelper.errorHandling)
+
+// console.log(process.env.DB_HOST)
+// console.log(process.env.DB_NAME)
+// console.log(process.env.DB_PASSWORD)
+// console.log(process.env.DB_USER)
 
 const PORT = process.env.PORT || 4000
 app.listen(PORT,()=>{

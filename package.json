@@ -16,13 +16,14 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "eslint": "^8.5.0",
     "nodemon": "^2.0.15"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "cross-env PORT=3500 DB_HOST=localhost DB_USER=root DB_PASSWORD=8karakteR# DB_NAME=zwallet nodemon index.js"
   },
   "author": "",
   "license": "ISC"
