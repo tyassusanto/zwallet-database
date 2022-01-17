@@ -14,7 +14,7 @@ const register = async (req, res, next)=>{
         return next(createError(403, 'Email Already Registered'))
     }
     if(userUsername.length > 0){
-        return next (createError(403, 'Email Already Registered'))
+        return next (createError(403, 'Username Already Registered'))
     }
     const hashPassword = await bcrypt.hash(password, 10);
     const insertDataRegister = {
@@ -41,8 +41,18 @@ const login = async (req, res, next) => {
         const [user] = await modelUsers.findUsername(username)
         if(!user) return next(createError(403, 'Username or Password Incorect'))
         const hashedPassword = await bcrypt.compare(password, user.password)
+        const result = {
+            id : user.id,
+            username : user.username,
+            name : user.name,
+            email : user.email,
+            phone : user.phone,
+            created_at : user.created_at,
+            updated_at : user.updated_at
+        }
+        // console.log(result);
         if(hashedPassword){
-            commonHelper.response(res, null, 200, `Succes Login, Welcome Back ${username}`)
+            commonHelper.response(res, result, 200, `Succes Login, Welcome Back ${username}`)
         } else {
             next(createError(403, 'Incorect Username or Password'))
         }
@@ -136,7 +146,14 @@ const detailUsers = async (req, res, next) => {
         const [result] = await modelUsers.detailUsers(id)
         res.json({
             message : `Detail Users id : ${id}`,
-            result
+            result : {
+                id : result.id,
+                username : result.username,
+                name : result.name,
+                email : result.email,
+                phone : result.phone,
+                pin : result.pin
+            }
         })
     } catch (error) {
         res.status(500),

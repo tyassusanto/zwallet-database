@@ -1,8 +1,8 @@
 const connection = require('../config/connection')
 
-const getUsers = () => {
+const getUsers = ({search}) => {
     return new Promise((resolve, reject) => {
-        connection.query("SELECT id, username, name, balance FROM users LEFT JOIN wallet on users.id = wallet.user_id", (error, result) => {
+        connection.query(`SELECT id, username, name, balance, phone FROM users LEFT JOIN wallet on users.id = wallet.user_id WHERE name LIKE '%${search}%' `, (error, result) => {
             if(!error){
                 resolve(result)
             }else{

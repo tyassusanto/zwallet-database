@@ -4,7 +4,8 @@ const commonHelper = require('../helper/common')
 // get all users data by admin
 const getUsers = async (req, res, next) => {
     try {
-        const result = await modelAdmin.getUsers()
+        const search = req.query.name || '%%'
+        const result = await modelAdmin.getUsers({search})
         res.status(200)
         commonHelper.response(res, result, 200, `Success Get All Data Users`)
     } catch (error) {
