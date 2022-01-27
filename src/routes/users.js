@@ -3,11 +3,13 @@ const route = express.Router()
 const usersController = require('../controller/users')
 const commonMiddlewere = require('../middlewere/common')
 const walletController = require('../controller/wallet')
+const { verifToken } = require('../middlewere/auth')
 
 route.post('/register', usersController.register)
 route.post('/login', usersController.login)
-route.get('/search', usersController.findAllUsers)
+route.get('/search', verifToken, usersController.findAllUsers)
 route.put('/update/:id', commonMiddlewere.validationUserUpdate, usersController.updateUsers)
+route.get('/profile', verifToken, usersController.userProfile)
 route.get('/profile/:id', usersController.detailUsers)
 
 
