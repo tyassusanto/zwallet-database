@@ -20,6 +20,7 @@ app.use(morgan('dev'))
 
 app.use(cors())
 // routes
+app.use('/file', express.static('./image'))
 app.use('/users', usersRoute)
 app.use('/admin', adminRoute)
 // URL NOT FOUND
