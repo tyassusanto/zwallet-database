@@ -23,10 +23,12 @@ const register = async (req, res, next) => {
             id: uuid(),
             username,
             email,
-            password: hashPassword
+            password: hashPassword,
+            status_verified : 'unverified'
         }
         const resultRegister = await modelUsers.registerUser(insertDataRegister)
-        commonHelper.response(res, insertDataRegister, 201, `Succes Create Account ${username}`)
+        commonHelper.sendEmail(email)
+        commonHelper.response(res, resultRegister, 201, `Succes Create Account ${username}`)
     } catch (error) {
         res.status(500),
             next({
@@ -121,12 +123,15 @@ const findAllUsers = async (req, res, next) => {
 
 // update
 const updateUsers = async (req, res, next) => {
+    // console.log(req.file);
     try {
         const id = req.params.id
         const { name, phone } = req.body
+        const fileName = req.file.filename
         const update = {
             name,
             phone,
+            photo : `localhost:3500/file/${fileName}`,
             updated_at: new Date()
         }
         const result = await modelUsers.updateUsers(update, id)

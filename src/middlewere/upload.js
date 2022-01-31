@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
         cb(null, true);
       } else {
         cb(null, false);
-        return cb(createError('Only .png, .jpg and .jpeg format allowed!'));
+        return cb(createError('Only .png, .jpg and .jpeg format allowed and 1MB maximum of size photo'));
       }
     },
     limits: { fileSize: maxSize }
