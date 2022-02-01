@@ -12,7 +12,7 @@ route.get('/search', verifToken, usersController.findAllUsers)
 route.put('/update/:id', upload.single('photo'), commonMiddlewere.validationUserUpdate, usersController.updateUsers)
 route.get('/profile', verifToken, usersController.userProfile)
 route.get('/profile/:id', usersController.detailUsers)
-
+// route.get('/verification/:id', commonMiddlewere.emailTokenVerification)
 
 route.post('/wallet', walletController.createWallet)
 

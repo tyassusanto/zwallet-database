@@ -63,7 +63,7 @@ const login = async (req, res, next) => {
             role: 'user'
         }
         const verifToken = {
-            expiresIn: '1h'
+            expiresIn: '1 day'
         }
         const token = jwt.sign(payload, secretKey, verifToken)
         user.token = token

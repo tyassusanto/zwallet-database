@@ -1,5 +1,6 @@
 const joi = require('joi')
 const createError = require('http-errors')
+const jwt = require('jsonwebtoken')
 
 const myConsole = (req, res, next)=>{ 
     console.log('middlewere');
@@ -21,7 +22,10 @@ const validationUserUpdate = (req, res, next) => {
     next()
 }
 
+
+
 module.exports = {
     myConsole,
-    validationUserUpdate
+    validationUserUpdate,
+    // emailTokenVerification
 }

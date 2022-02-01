@@ -28,7 +28,7 @@ const response = (res, result, status, message, pagination) => {
     })
 }
 
-const sendEmail = async (toEmail) => {
+const sendEmail = async (toEmail, token) => {
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
@@ -43,29 +43,29 @@ const sendEmail = async (toEmail) => {
     to: toEmail, // list of receivers
     subject: "Hello ✔", // Subject line
     text: 'Hello world?', // plain text body
-    html: "<b>Hello world?</b>", // html body // html body
+    html: `<b>http://localhost:3500/users/verification/${token}</b>`, // html body // html body
   });
-  console.log(info);
+  // console.log(info);
 };
 
-const errorMulter = (req, res) => {
-    upload(req, res, function (err) {
-      if (err instanceof multer.MulterError) {
-        // A Multer error occurred when uploading.
-        res.send(err)
-      } else if (err) {
-        // An unknown error occurred when uploading.
-        res.send(err)
-      }
-      // Everything went fine.
-      console.log(req.file);
-    })
-  }
+// const errorMulter = (req, res) => {
+//     upload(req, res, function (err) {
+//       if (err instanceof multer.MulterError) {
+//         // A Multer error occurred when uploading.
+//         res.send(err)
+//       } else if (err) {
+//         // An unknown error occurred when uploading.
+//         res.send(err)
+//       }
+//       // Everything went fine.
+//       console.log(req.file);
+//     })
+//   }
 
 module.exports = {
     notFound,
     errorHandling,
     response,
     sendEmail,
-    errorMulter
+    // errorMulter
 }
