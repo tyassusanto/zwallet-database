@@ -5,6 +5,7 @@ const commonHelper = require('../helper/common') //help response / error control
 const { v4: uuid } = require('uuid') //unic user id
 const bcrypt = require('bcrypt') //encrypting user password
 const jwt = require('jsonwebtoken')
+const client = require('../config/redis')
 
 // register / create
 const register = async (req, res, next) => {
@@ -60,7 +61,7 @@ const login = async (req, res, next) => {
         const payload = {
             email: user.email,
             name: user.name,
-            role: 'user'
+            role: user.role
         }
         const verifToken = {
             expiresIn: '1 day'
@@ -73,7 +74,9 @@ const login = async (req, res, next) => {
             name: user.name,
             email: user.email,
             phone: user.phone,
-            token
+            photo: user.photo,
+            token,
+            role: user.role
         }
         commonHelper.response(res, result, 200, `Succes Login, Welcome Back ${username}`)
 
@@ -168,6 +171,7 @@ const detailUsers = async (req, res, next) => {
     try {
         const id = req.params.id
         const [result] = await modelUsers.detailUsers(id)
+        await client.setEx(`users/${id}`, 60 * 60, JSON.stringify(result))
         res.json({
             message: `Detail Users id : ${id}`,
             result: {
@@ -192,7 +196,7 @@ const detailUsers = async (req, res, next) => {
 const userProfile = async (req, res, next) => {
     const email = req.email
     const users = await modelUsers.findEmail(email)
-    console.log(users);
+    // console.log(users);
     // const result = {
     //     id: users.id,
     //     username: users.username,

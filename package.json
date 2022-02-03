@@ -27,7 +27,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "cross-env PORT=3500 DB_HOST=localhost DB_USER=root DB_PASSWORD=8karakteR# DB_NAME=zwallet nodemon index.js"
+    "dev": "nodemon index.js"
   },
   "author": "",
   "license": "ISC"

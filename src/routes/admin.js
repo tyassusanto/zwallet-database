@@ -3,7 +3,7 @@ const route = express.Router()
 const adminController = require('../controller/admin')
 const { verifToken, isAdmin } = require('../middlewere/auth')
 
-route.get('/allusers', verifToken, adminController.getUsers)
-route.delete('/delete/:id', isAdmin, adminController.deleteUsers)
+route.get('/allusers',  adminController.getUsers)
+route.delete('/delete/:id', verifToken, isAdmin, adminController.deleteUsers)
 
 module.exports = route

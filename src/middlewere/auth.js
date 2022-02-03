@@ -23,14 +23,22 @@ const verifToken = (req, res, next) => {
       next()
 }
 
+// const isAdmin = (req, res, next) => {
+//     const role = req.role
+//     if (role !== 'admin') {
+//         return next(createError(401, 'Access Denied'))
+//     } else{
+//         next()
+//     }
+// }
 const isAdmin = (req, res, next) => {
-    const role = req.role
-    if (role !== 'admin') {
-        return next(createError(401, 'Access Denied'))
-    } else{
-        next()
+    const role = req.role;
+    if (role === 'admin') {
+      next();
+    } else {
+      return next(createError(403, 'Access Denied!'))
     }
-}
+  };
 
 module.exports = {
     verifToken,
